@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="dk">
+
+<head>
+	<title>CVR OPSLAG</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div id="cvr_opslag">
+			<h1>LYN-CVR-OPSLAG.</h1> <input style="width: 100%" id="vInput" type="text"
+				placeholder="Søg på CVR, TLF, Navn..."></input> <br><br>
+			<p>Skriv noget i søgefeltet, og tast <kbd>ENTER</kbd> for at søge på i CVR registeret på Selskabsnavn, CVR og
+				TLF-hovednr.</p><br>
+			<div id="cvr_opslag_tables">
+				<h3>Tilgængelige oplysninger</h3> <br>
+				<table class="table table-striped table-condensed table-dark table-hover">
+					<tbody id="vTable">
+						<tr></tr>
+					</tbody>
+				</table> <br>
+				<h3>Ikke oplyst</h3>
+				<table class="table table-striped table-condensed table-dark table-hover">
+					<tbody id="vTableEmpty">
+						<tr></tr>
+					</tbody>
+				</table>
+			</div>
+			<script>
+				var opslagCVR = (function () {
+					function a(a = "", c = "dk") {
+						$("#cvr_opslag_tables").show();
+						var d = "";
+						(d += "http://cvrapi.dk/api?"),
+							(d += "search=" + a),
+							(d += "&country=" + c),
+							jQuery.ajax({
+								type: "GET",
+								dataType: "jsonp",
+								url: d,
+								success: function (a) {
+									console.log(a), b(a, c);
+								}
+							});
+					}
+					function b(a, b) {
+						(d = []),
+							(e = []),
+							f.empty(),
+							g.empty(),
+							d.push("CVR: "),
+							e.push(a.vat),
+							d.push("Land: "),
+							e.push(b),
+							d.push("Selskabsnavn: "),
+							e.push(a.name),
+							d.push("Adresse: "),
+							e.push(a.address),
+							d.push("Postnr: "),
+							e.push(a.zipcode),
+							d.push("By: "),
+							e.push(a.city),
+							d.push("Bynavn: "),
+							e.push(a.cityname),
+							d.push("Beskyttet: "),
+							e.push(a.protected),
+							d.push("Telefon: "),
+							e.push(a.phone),
+							d.push("Email: "),
+							e.push(a.email),
+							d.push("Fax: "),
+							e.push(a.fax),
+							d.push("Stiftelsesdato: "),
+							e.push(a.startdate),
+							d.push("Nedl\xE6ggelsesdato: "),
+							e.push(a.enddate),
+							d.push("Ansatte: "),
+							e.push(a.employees),
+							d.push("C.O. Adresse: "),
+							e.push(a.addressco),
+							d.push("Branchekode: "),
+							e.push(a.industrycode),
+							d.push("Branchekode beskrivelse: "),
+							e.push(a.industrydesc),
+							d.push("Selskabsform-nummer: "),
+							e.push(a.companycode),
+							d.push("Selskabsform: "),
+							e.push(a.companydesc),
+							d.push("Konkurs: "),
+							e.push(a.creditbankrupt),
+							d.push("Kredit-status: "),
+							e.push(a.creditstatus),
+							d.push("Kreditdato: "),
+							e.push(a.creditstartdate);
+						var c = a.productionunits,
+							h = a.owners;
+						for (var k in h) d.push("ejer" + k + ").name: "), e.push(c[k].name);
+						for (var i in c) {
+							let a = " " + parseInt(parseInt(i) + 1).toString();
+							1 >= c.length && (a = ""),
+								d.push("Produktionsenhed" + a + ": P-nummer: "),
+								e.push(c[i].pno),
+								d.push("Produktionsenhed" + a + ": Prim\xE6r: "),
+								e.push(c[i].main),
+								d.push("Produktionsenhed" + a + ": Navn: "),
+								e.push(c[i].name),
+								d.push("Produktionsenhed" + a + ": Adresse: "),
+								e.push(c[i].address),
+								d.push("Produktionsenhed" + a + ": Postnummer: "),
+								e.push(c[i].zipcode),
+								d.push("Produktionsenhed" + a + ": By: "),
+								e.push(c[i].city),
+								d.push("Produktionsenhed" + a + ": Bynavn: "),
+								e.push(c[i].cityname),
+								d.push("Produktionsenhed" + a + ": Beskyttet: "),
+								e.push(c[i].protected),
+								d.push("Produktionsenhed" + a + ": Telefon: "),
+								e.push(c[i].phone),
+								d.push("Produktionsenhed" + a + ": Email: "),
+								e.push(c[i].email),
+								d.push("Produktionsenhed" + a + ": Stiftelsesdato: "),
+								e.push(c[i].startdate),
+								d.push("Produktionsenhed" + a + ": Nedl\xE6ggelsesdato: "),
+								e.push(c[i].enddate),
+								d.push("Produktionsenhed" + a + ": Ansatte: "),
+								e.push(c[i].employees),
+								d.push("Produktionsenhed" + a + ": C.O. Adresse: "),
+								e.push(c[i].addressco),
+								d.push("Produktionsenhed" + a + ": Branchekode: "),
+								e.push(c[i].industrycode),
+								d.push("Produktionsenhed" + a + ": Branchekodebeskrivelse: "),
+								e.push(c[i].industrydesc);
+						}
+						for (var j in d) {
+							var l;
+							e[j] ? (l = f) : ((e[j] = "Ikke oplyst"), (l = g)),
+								!0 == e[j] && (e[j] = "Ja"),
+								l.append("<tr>"),
+								l.append("<td>" + d[j].toString() + "</td>"),
+								l.append("<td>" + e[j].toString() + "</td>"),
+								l.append("</tr>");
+						}
+					}
+					function c() {
+						var b = $("#vInput");
+						b.on("keyup", function (c) {
+							b.val().toLowerCase();
+							13 === c.keyCode && a(b.val(), "dk");
+						}),
+							$("#vFilter").on("keyup", function () {
+								var a = $(this)
+									.val()
+									.toLowerCase();
+								$("#vTable tr").filter(function () {
+									$(this).toggle(
+										-1 <
+										$(this)
+											.text()
+											.toLowerCase()
+											.indexOf(a)
+									);
+								});
+							});
+					}
+					var d = [],
+						e = [],
+						f = $("#vTable"),
+						g = $("#vTableEmpty");
+					$(document).ready(function () {
+						c(), $("#cvr_opslag_tables").hide();
+					});
+				})();
+
+			</script>
+		</div>
+</body>
+
+</html>
